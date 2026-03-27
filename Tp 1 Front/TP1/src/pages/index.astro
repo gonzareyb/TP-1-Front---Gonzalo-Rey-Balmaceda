@@ -1,11 +1,319 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Inicio">
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="pixel-cloud" style="top: 15%; left: 8%; animation-delay: 0s;">☁️</div>
+      <div class="pixel-cloud" style="top: 25%; left: 70%; animation-delay: 1.5s;">☁️</div>
+      <div class="pixel-cloud" style="top: 10%; left: 45%; animation-delay: 3s;">☁️</div>
+    </div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">¡Bienvenido a</p>
+      <h1 class="hero-title">Nintendo<br /><span class="highlight">World</span></h1>
+      <p class="hero-subtitle">
+        Tu enciclopedia definitiva de juegos de Mario, consolas Nintendo y el clima del mundo real.
+      </p>
+      <a href="#secciones" class="btn-primary">Explorar ↓</a>
+    </div>
+
+    <div class="hero-mario">
+      <div class="mario-sprite">🍄</div>
+      <div class="mario-ground"></div>
+    </div>
+  </section>
+
+  <!-- SECCIONES -->
+  <section class="secciones container" id="secciones">
+    <h2 class="page-title">— Elegí una sección —</h2>
+
+    <div class="cards-grid">
+
+      <a href="/mario" class="section-card card-mario">
+        <div class="card-icon">🎮</div>
+        <div class="card-body">
+          <h3 class="card-title">Juegos de Mario</h3>
+          <p class="card-desc">Explorá el catálogo completo de la saga más icónica de Nintendo. Filtrá por consola, año y más.</p>
+          <span class="card-tag">Catálogo</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </a>
+
+      <a href="/consolas" class="section-card card-consolas">
+        <div class="card-icon">🕹️</div>
+        <div class="card-body">
+          <h3 class="card-title">Consolas Nintendo</h3>
+          <p class="card-desc">Desde la NES hasta la Switch. Conocé la historia del hardware que cambió los videojuegos.</p>
+          <span class="card-tag">Catálogo</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </a>
+
+      <a href="/clima" class="section-card card-clima">
+        <div class="card-icon">🌤️</div>
+        <div class="card-body">
+          <h3 class="card-title">Dashboard del Clima</h3>
+          <p class="card-desc">Consultá el clima en tiempo real de cualquier ciudad del mundo. Powered by OpenWeather.</p>
+          <span class="card-tag">Dashboard</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats container">
+    <div class="stat-item">
+      <span class="stat-number">20+</span>
+      <span class="stat-label">Juegos de Mario</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">15+</span>
+      <span class="stat-label">Consolas Nintendo</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">∞</span>
+      <span class="stat-label">Ciudades del mundo</span>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 60% 50%, rgba(229, 37, 33, 0.12) 0%, transparent 70%),
+                var(--bg);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .pixel-cloud {
+    position: absolute;
+    font-size: 2.5rem;
+    animation: floatCloud 6s ease-in-out infinite;
+    opacity: 0.5;
+  }
+
+  @keyframes floatCloud {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(20px); }
+  }
+
+  .hero-content {
+    text-align: center;
+    z-index: 1;
+    animation: fadeInUp 0.8s ease forwards;
+    padding: 2rem;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-pixel);
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+  }
+
+  .hero-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.8rem, 6vw, 4rem);
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    text-shadow: 4px 4px 0 rgba(229, 37, 33, 0.3);
+  }
+
+  .highlight {
+    color: var(--accent);
+    -webkit-text-stroke: 2px var(--accent2);
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 0 #8b1510;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 0 #8b1510;
+  }
+
+  .btn-primary:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #8b1510;
+  }
+
+  .hero-mario {
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+  }
+
+  .mario-sprite {
+    font-size: 5rem;
+    animation: marioJump 3s ease-in-out infinite;
+  }
+
+  @keyframes marioJump {
+    0%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-40px); }
+    60% { transform: translateY(-40px); }
+  }
+
+  .mario-ground {
+    height: 6px;
+    background: var(--accent2);
+    border-radius: 3px;
+    margin-top: 4px;
+    box-shadow: 0 0 12px rgba(251, 208, 0, 0.4);
+  }
+
+  /* ===== SECCIONES ===== */
+  .secciones {
+    padding: 5rem 1.5rem;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .section-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 2rem;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .section-card:nth-child(1) { animation-delay: 0.1s; }
+  .section-card:nth-child(2) { animation-delay: 0.2s; }
+  .section-card:nth-child(3) { animation-delay: 0.3s; }
+
+  .card-mario:hover  { border-color: var(--accent); box-shadow: 0 8px 30px rgba(229,37,33,0.2); }
+  .card-consolas:hover { border-color: var(--accent3); box-shadow: 0 8px 30px rgba(10,122,191,0.2); }
+  .card-clima:hover  { border-color: var(--accent2); box-shadow: 0 8px 30px rgba(251,208,0,0.2); }
+
+  .section-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .card-icon {
+    font-size: 2.5rem;
+  }
+
+  .card-title {
+    font-family: var(--font-pixel);
+    font-size: 0.65rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .card-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .card-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    background: rgba(229,37,33,0.1);
+    color: var(--accent);
+    width: fit-content;
+  }
+
+  .card-consolas .card-tag { background: rgba(10,122,191,0.1); color: var(--accent3); }
+  .card-clima .card-tag { background: rgba(251,208,0,0.1); color: var(--accent2); }
+
+  .card-arrow {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    align-self: flex-end;
+    transition: transform 0.3s ease;
+  }
+
+  .section-card:hover .card-arrow {
+    transform: translateX(6px);
+    color: var(--text);
+  }
+
+  /* ===== STATS ===== */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    padding: 3rem 1.5rem 5rem;
+    border-top: 2px solid var(--bg2);
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-family: var(--font-pixel);
+    font-size: 2rem;
+    color: var(--accent2);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .hero-mario { display: none; }
+    .stats { gap: 2rem; }
+  }
+</style>
