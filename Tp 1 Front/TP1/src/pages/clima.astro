@@ -231,4 +231,170 @@ import Layout from '../layouts/Layout.astro';
   .clima-pais {
     color: var(--text-muted);
     font-size: 0.9rem;
-    margin-top:
+    margin-top: 0.3rem;
+  }
+
+  .clima-icon { font-size: 4rem; }
+
+  .clima-temp-box {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .clima-temp {
+    font-family: var(--font-pixel);
+    font-size: 3rem;
+    color: var(--accent2);
+    line-height: 1;
+  }
+
+  .clima-desc {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+
+  .clima-datos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .dato {
+    background: var(--bg2);
+    border-radius: 10px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .dato-icon { font-size: 1.3rem; }
+
+  .dato-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .dato-valor {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  /* CIUDADES RÁPIDAS */
+  .ciudades-rapidas {
+    margin-top: 2.5rem;
+  }
+
+  .rapidas-label {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .rapidas-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .rapida-btn {
+    background: var(--card);
+    border: 2px solid var(--bg2);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .rapida-btn:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 500px) {
+    .clima-datos { grid-template-columns: 1fr; }
+    .clima-temp { font-size: 2rem; }
+  }
+</style>
+
+<script>
+  const API_KEY = "a3de50b6778c4af1f8fadfff85b00d7e";
+  
+  const input = document.getElementById("ciudadInput") as HTMLInputElement;
+  const btn = document.getElementById("buscarBtn");
+  const loading = document.getElementById("loading");
+  const errorMsg = document.getElementById("errorMsg");
+  const resultado = document.getElementById("resultado");
+
+  async function buscarClima(ciudad: string) {
+    if (!ciudad.trim()) return;
+
+    loading!.style.display = "flex";
+    errorMsg!.style.display = "none";
+    resultado!.style.display = "none";
+
+    try {
+      const res = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(ciudad)}&appid=${API_KEY}&units=metric&lang=es`
+      );
+
+      if (!res.ok) throw new Error("Ciudad no encontrada");
+
+      const data = await res.json();
+
+      document.getElementById("climaCiudad")!.textContent = data.name;
+      document.getElementById("climaPais")!.textContent = data.sys.country;
+      document.getElementById("climaTemp")!.textContent = `${Math.round(data.main.temp)}°C`;
+      document.getElementById("climaDesc")!.textContent = data.weather[0].description;
+      document.getElementById("climaHumedad")!.textContent = `${data.main.humidity}%`;
+      document.getElementById("climaViento")!.textContent = `${Math.round(data.wind.speed * 3.6)} km/h`;
+      document.getElementById("climaSensacion")!.textContent = `${Math.round(data.main.feels_like)}°C`;
+      document.getElementById("climaVisibilidad")!.textContent = `${(data.visibility / 1000).toFixed(1)} km`;
+
+      const iconCode = data.weather[0].icon;
+      const iconMap: Record<string, string> = {
+        "01d": "☀️", "01n": "🌙", "02d": "⛅", "02n": "⛅",
+        "03d": "☁️", "03n": "☁️", "04d": "☁️", "04n": "☁️",
+        "09d": "🌧️", "09n": "🌧️", "10d": "🌦️", "10n": "🌧️",
+        "11d": "⛈️", "11n": "⛈️", "13d": "❄️", "13n": "❄️",
+        "50d": "🌫️", "50n": "🌫️"
+      };
+      document.getElementById("climaIcon")!.textContent = iconMap[iconCode] || "🌡️";
+
+      resultado!.style.display = "block";
+    } catch {
+      errorMsg!.style.display = "flex";
+    } finally {
+      loading!.style.display = "none";
+    }
+  }
+
+  btn?.addEventListener("click", () => buscarClima(input.value));
+  input?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") buscarClima(input.value);
+  });
+
+  document.querySelectorAll(".rapida-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const ciudad = btn.getAttribute("data-ciudad") ?? "";
+      input.value = ciudad;
+      buscarClima(ciudad);
+    });
+  });
+</script>
