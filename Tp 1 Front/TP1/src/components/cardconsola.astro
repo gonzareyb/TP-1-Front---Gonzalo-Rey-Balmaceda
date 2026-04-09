@@ -1,0 +1,119 @@
+---
+interface Props {
+  nombre: string;
+  anio: number;
+  generacion: string;
+  descripcion: string;
+  emoji: string;
+  ventas: string;
+}
+
+const { nombre, anio, generacion, descripcion, emoji, ventas } = Astro.props;
+---
+
+<article class="card-consola" data-generacion={generacion}>
+  <div class="card-emoji">{emoji}</div>
+  <div class="card-meta">
+    <span class="card-gen">{generacion}</span>
+    <span class="card-anio">{anio}</span>
+  </div>
+  <h3 class="card-nombre">{nombre}</h3>
+  <p class="card-desc">{descripcion}</p>
+  <div class="card-ventas">
+    <span class="ventas-label">Unidades vendidas</span>
+    <span class="ventas-valor">{ventas}</span>
+  </div>
+</article>
+
+<style>
+  .card-consola {
+    background: var(--card);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.4s ease forwards;
+    opacity: 0;
+  }
+
+  .card-consola:hover {
+    border-color: var(--accent3);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(10, 122, 191, 0.2);
+  }
+
+  .card-emoji {
+    font-size: 3rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .card-consola:hover .card-emoji {
+    transform: scale(1.15) rotate(5deg);
+  }
+
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-gen {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--accent3);
+    background: rgba(10, 122, 191, 0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+  }
+
+  .card-anio {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .card-nombre {
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    line-height: 1.9;
+    color: var(--text);
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .card-ventas {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 122, 191, 0.08);
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    margin-top: 0.3rem;
+  }
+
+  .ventas-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .ventas-valor {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--accent3);
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

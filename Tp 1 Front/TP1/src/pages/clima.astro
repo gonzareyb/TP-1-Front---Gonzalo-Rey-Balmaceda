@@ -1,0 +1,234 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Clima">
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-icon">🌤️</div>
+      <h1 class="page-title">Dashboard del Clima</h1>
+      <p class="page-subtitle">Consultá el clima en tiempo real de cualquier ciudad del mundo</p>
+    </div>
+  </section>
+
+  <section class="clima-section container">
+
+    <!-- BUSCADOR -->
+    <div class="search-box">
+      <input type="text" id="ciudadInput" class="ciudad-input" placeholder="Escribí una ciudad... (ej: Buenos Aires)" />
+      <button id="buscarBtn" class="buscar-btn">Buscar 🔍</button>
+    </div>
+
+    <!-- LOADING -->
+    <div id="loading" class="loading" style="display:none">
+      <div class="spinner"></div>
+      <p>Buscando clima...</p>
+    </div>
+
+    <!-- ERROR -->
+    <div id="errorMsg" class="error-msg" style="display:none">
+      <span>⚠️</span>
+      <p>Ciudad no encontrada. Revisá el nombre e intentá de nuevo.</p>
+    </div>
+
+    <!-- RESULTADO -->
+    <div id="resultado" class="resultado" style="display:none">
+      <div class="clima-card">
+        <div class="clima-header">
+          <div>
+            <h2 class="clima-ciudad" id="climaCiudad"></h2>
+            <p class="clima-pais" id="climaPais"></p>
+          </div>
+          <div class="clima-icon" id="climaIcon"></div>
+        </div>
+
+        <div class="clima-temp-box">
+          <span class="clima-temp" id="climaTemp"></span>
+          <span class="clima-desc" id="climaDesc"></span>
+        </div>
+
+        <div class="clima-datos">
+          <div class="dato">
+            <span class="dato-icon">💧</span>
+            <span class="dato-label">Humedad</span>
+            <span class="dato-valor" id="climaHumedad"></span>
+          </div>
+          <div class="dato">
+            <span class="dato-icon">💨</span>
+            <span class="dato-label">Viento</span>
+            <span class="dato-valor" id="climaViento"></span>
+          </div>
+          <div class="dato">
+            <span class="dato-icon">🌡️</span>
+            <span class="dato-label">Sensación</span>
+            <span class="dato-valor" id="climaSensacion"></span>
+          </div>
+          <div class="dato">
+            <span class="dato-icon">👁️</span>
+            <span class="dato-label">Visibilidad</span>
+            <span class="dato-valor" id="climaVisibilidad"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CIUDADES RÁPIDAS -->
+    <div class="ciudades-rapidas">
+      <p class="rapidas-label">Ciudades rápidas:</p>
+      <div class="rapidas-btns">
+        <button class="rapida-btn" data-ciudad="Buenos Aires">🇦🇷 Buenos Aires</button>
+        <button class="rapida-btn" data-ciudad="Madrid">🇪🇸 Madrid</button>
+        <button class="rapida-btn" data-ciudad="Tokyo">🇯🇵 Tokyo</button>
+        <button class="rapida-btn" data-ciudad="New York">🇺🇸 New York</button>
+        <button class="rapida-btn" data-ciudad="London">🇬🇧 London</button>
+        <button class="rapida-btn" data-ciudad="Paris">🇫🇷 Paris</button>
+      </div>
+    </div>
+
+  </section>
+</Layout>
+
+<style>
+  .page-hero {
+    background: radial-gradient(ellipse at center, rgba(251,208,0,0.12) 0%, transparent 70%), var(--bg);
+    padding: 4rem 1.5rem 2rem;
+    text-align: center;
+  }
+
+  .page-hero-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .page-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .clima-section {
+    padding: 3rem 1.5rem 5rem;
+    max-width: 700px;
+  }
+
+  /* SEARCH */
+  .search-box {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .ciudad-input {
+    flex: 1;
+    min-width: 200px;
+    background: var(--card);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 0.75rem 1.2rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .ciudad-input:focus { border-color: var(--accent2); }
+  .ciudad-input::placeholder { color: var(--text-muted); }
+
+  .buscar-btn {
+    background: var(--accent2);
+    color: #1a1a2e;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 800;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 0 #b89a00;
+  }
+
+  .buscar-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #b89a00;
+  }
+
+  .buscar-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #b89a00;
+  }
+
+  /* LOADING */
+  .loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--bg2);
+    border-top-color: var(--accent2);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ERROR */
+  .error-msg {
+    background: rgba(229,37,33,0.1);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 700;
+  }
+
+  .error-msg span { font-size: 1.5rem; }
+
+  /* RESULTADO */
+  .clima-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 2rem;
+    border: 2px solid var(--accent2);
+    box-shadow: 0 8px 30px rgba(251,208,0,0.15);
+    animation: fadeInUp 0.4s ease forwards;
+  }
+
+  .clima-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .clima-ciudad {
+    font-family: var(--font-pixel);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .clima-pais {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top:

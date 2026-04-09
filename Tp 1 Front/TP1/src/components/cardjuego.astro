@@ -1,0 +1,110 @@
+---
+interface Props {
+  titulo: string;
+  anio: number;
+  consola: string;
+  descripcion: string;
+  emoji: string;
+  genero: string;
+}
+
+const { titulo, anio, consola, descripcion, emoji, genero } = Astro.props;
+---
+
+<article class="card-juego" data-consola={consola} data-genero={genero}>
+  <div class="card-emoji">{emoji}</div>
+  <div class="card-info">
+    <div class="card-meta">
+      <span class="card-consola">{consola}</span>
+      <span class="card-anio">{anio}</span>
+    </div>
+    <h3 class="card-titulo">{titulo}</h3>
+    <p class="card-desc">{descripcion}</p>
+    <span class="card-genero">{genero}</span>
+  </div>
+</article>
+
+<style>
+  .card-juego {
+    background: var(--card);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    cursor: default;
+    animation: fadeInUp 0.4s ease forwards;
+    opacity: 0;
+  }
+
+  .card-juego:hover {
+    border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(229, 37, 33, 0.2);
+  }
+
+  .card-emoji {
+    font-size: 3rem;
+    text-align: center;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    transition: transform 0.3s ease;
+  }
+
+  .card-juego:hover .card-emoji {
+    transform: scale(1.2) rotate(-5deg);
+  }
+
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-consola {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--accent2);
+    background: rgba(251, 208, 0, 0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+  }
+
+  .card-anio {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .card-titulo {
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    line-height: 1.9;
+    color: var(--text);
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .card-genero {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    background: rgba(229, 37, 33, 0.1);
+    color: var(--accent);
+    width: fit-content;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+

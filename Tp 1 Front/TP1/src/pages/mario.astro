@@ -1,0 +1,273 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CardJuego from '../components/CardJuego.astro';
+
+const juegos = [
+  { titulo: "Super Mario Bros.", anio: 1985, consola: "NES", descripcion: "El clásico que lo inició todo. Mario rescata a la Princesa Peach del malvado Bowser.", emoji: "🍄", genero: "Plataformas" },
+  { titulo: "Super Mario Bros. 3", anio: 1988, consola: "NES", descripcion: "Ocho mundos épicos, nuevos trajes y la introducción de la hoja Super.", emoji: "🍃", genero: "Plataformas" },
+  { titulo: "Super Mario World", anio: 1990, consola: "SNES", descripcion: "Mario llega a la Super Nintendo junto a Yoshi por primera vez.", emoji: "🦕", genero: "Plataformas" },
+  { titulo: "Super Mario 64", anio: 1996, consola: "N64", descripcion: "El salto revolucionario a las 3D. Mario en el castillo de Peach con 120 estrellas.", emoji: "⭐", genero: "Plataformas 3D" },
+  { titulo: "Super Mario Sunshine", anio: 2002, consola: "GameCube", descripcion: "Mario en la Isla Delfino limpiando grafitis con FLUDD, su mochila de agua.", emoji: "💦", genero: "Plataformas 3D" },
+  { titulo: "New Super Mario Bros.", anio: 2006, consola: "DS", descripcion: "El regreso a las plataformas 2D con gráficos modernos y nuevos power-ups.", emoji: "🎈", genero: "Plataformas" },
+  { titulo: "Super Mario Galaxy", anio: 2007, consola: "Wii", descripcion: "Mario viaja por el espacio en planetas esféricos. Gravedad como mecánica central.", emoji: "🌌", genero: "Plataformas 3D" },
+  { titulo: "Super Mario Galaxy 2", anio: 2010, consola: "Wii", descripcion: "Secuela directa con más planetas, más Yoshi y desafíos aún más creativos.", emoji: "🚀", genero: "Plataformas 3D" },
+  { titulo: "Super Mario 3D Land", anio: 2011, consola: "3DS", descripcion: "Fusión perfecta entre el Mario 2D y 3D, diseñado para la pantalla estereoscópica.", emoji: "🌿", genero: "Plataformas 3D" },
+  { titulo: "New Super Mario Bros. U", anio: 2012, consola: "Wii U", descripcion: "Aventura cooperativa de plataformas con hasta 5 jugadores en pantalla.", emoji: "🏰", genero: "Plataformas" },
+  { titulo: "Super Mario 3D World", anio: 2013, consola: "Wii U", descripcion: "Cuatro personajes jugables, mundos en tubo y el traje de Gato como estrella.", emoji: "🐱", genero: "Plataformas 3D" },
+  { titulo: "Super Mario Odyssey", anio: 2017, consola: "Switch", descripcion: "Mario y Cappy viajan por reinos únicos capturando enemigos. Más de 800 lunas.", emoji: "🎩", genero: "Plataformas 3D" },
+  { titulo: "Super Mario Maker 2", anio: 2019, consola: "Switch", descripcion: "Creá y compartí tus propios niveles de Mario con millones de jugadores.", emoji: "🔧", genero: "Creación" },
+  { titulo: "Super Mario Bros. Wonder", anio: 2023, consola: "Switch", descripcion: "La flor Wonder transforma los niveles de formas impredecibles y delirantes.", emoji: "🌸", genero: "Plataformas" },
+  { titulo: "Paper Mario", anio: 2000, consola: "N64", descripcion: "Mario en un mundo de papel con mecánicas RPG. Historia y humor encantadores.", emoji: "📄", genero: "RPG" },
+  { titulo: "Mario Kart 8 Deluxe", anio: 2017, consola: "Switch", descripcion: "La versión definitiva del juego de carreras con 96 pistas y modo batalla.", emoji: "🏎️", genero: "Carreras" },
+  { titulo: "Mario Party Superstars", anio: 2021, consola: "Switch", descripcion: "100 minijuegos clásicos y los tableros más queridos de la saga.", emoji: "🎲", genero: "Party" },
+  { titulo: "Mario & Luigi: Superstar Saga", anio: 2003, consola: "GBA", descripcion: "Los hermanos viajan al Reino de los Frijoles en este RPG cómico y brillante.", emoji: "💼", genero: "RPG" },
+];
+
+const consolas = ["Todas", ...new Set(juegos.map(j => j.consola))];
+const generos = ["Todos", ...new Set(juegos.map(j => j.genero))];
+---
+
+<Layout title="Juegos de Mario">
+  <section class="page-hero">
+    <div class="page-hero-content container">
+      <div class="page-hero-icon">🍄</div>
+      <h1 class="page-title">Juegos de Mario</h1>
+      <p class="page-subtitle">La saga de plataformas más exitosa de la historia</p>
+    </div>
+  </section>
+
+  <section class="catalogo container">
+
+    <!-- FILTROS -->
+    <div class="filtros">
+      <div class="filtro-grupo">
+        <label class="filtro-label">🎮 Consola</label>
+        <div class="filtro-btns" id="filtroConsola">
+          {consolas.map(c => (
+            <button class={`filtro-btn ${c === "Todas" ? "active" : ""}`} data-valor={c}>
+              {c}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="filtro-grupo">
+        <label class="filtro-label">🎯 Género</label>
+        <div class="filtro-btns" id="filtroGenero">
+          {generos.map(g => (
+            <button class={`filtro-btn ${g === "Todos" ? "active" : ""}`} data-valor={g}>
+              {g}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="filtro-grupo">
+        <label class="filtro-label">🔍 Buscar</label>
+        <input type="text" id="busqueda" class="filtro-input" placeholder="Nombre del juego..." />
+      </div>
+    </div>
+
+    <!-- CONTADOR -->
+    <p class="resultado-count" id="contador">{juegos.length} juegos encontrados</p>
+
+    <!-- GRID -->
+    <div class="grid-cards" id="gridJuegos">
+      {juegos.map((juego, i) => (
+        <div style={`animation-delay: ${i * 0.05}s`}>
+          <CardJuego {...juego} />
+        </div>
+      ))}
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="emptyState" style="display:none">
+      <span>😢</span>
+      <p>No se encontraron juegos con esos filtros.</p>
+    </div>
+
+  </section>
+</Layout>
+
+<style>
+  .page-hero {
+    background: radial-gradient(ellipse at center, rgba(229,37,33,0.15) 0%, transparent 70%), var(--bg);
+    padding: 4rem 1.5rem 2rem;
+    text-align: center;
+  }
+
+  .page-hero-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .page-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .catalogo {
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  .filtros {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .filtro-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .filtro-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .filtro-btn {
+    background: var(--bg2);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.35rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filtro-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .filtro-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  .filtro-input {
+    width: 100%;
+    max-width: 320px;
+    background: var(--bg2);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .filtro-input:focus {
+    border-color: var(--accent);
+  }
+
+  .filtro-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .resultado-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem;
+    color: var(--text-muted);
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .empty-state span { font-size: 3rem; }
+
+  @media (max-width: 600px) {
+    .filtro-input { max-width: 100%; }
+  }
+</style>
+
+<script>
+  let consolaActiva = "Todas";
+  let generoActivo = "Todos";
+  let busquedaActiva = "";
+
+  const grid = document.getElementById("gridJuegos");
+  const cards = grid?.querySelectorAll("[data-consola]") ?? [];
+  const contador = document.getElementById("contador");
+  const emptyState = document.getElementById("emptyState");
+
+  function filtrar() {
+    let visibles = 0;
+
+    cards.forEach((card) => {
+      const consola = card.getAttribute("data-consola") ?? "";
+      const genero = card.getAttribute("data-genero") ?? "";
+      const titulo = card.querySelector(".card-titulo")?.textContent?.toLowerCase() ?? "";
+
+      const matchConsola = consolaActiva === "Todas" || consola === consolaActiva;
+      const matchGenero = generoActivo === "Todos" || genero === generoActivo;
+      const matchBusqueda = titulo.includes(busquedaActiva.toLowerCase());
+
+      const visible = matchConsola && matchGenero && matchBusqueda;
+      (card as HTMLElement).style.display = visible ? "" : "none";
+      if (visible) visibles++;
+    });
+
+    if (contador) contador.textContent = `${visibles} juego${visibles !== 1 ? "s" : ""} encontrado${visibles !== 1 ? "s" : ""}`;
+    if (emptyState) emptyState.style.display = visibles === 0 ? "flex" : "none";
+    if (grid) (grid as HTMLElement).style.display = visibles === 0 ? "none" : "grid";
+  }
+
+  document.getElementById("filtroConsola")?.querySelectorAll(".filtro-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.getElementById("filtroConsola")?.querySelectorAll(".filtro-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      consolaActiva = btn.getAttribute("data-valor") ?? "Todas";
+      filtrar();
+    });
+  });
+
+  document.getElementById("filtroGenero")?.querySelectorAll(".filtro-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.getElementById("filtroGenero")?.querySelectorAll(".filtro-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      generoActivo = btn.getAttribute("data-valor") ?? "Todos";
+      filtrar();
+    });
+  });
+
+  document.getElementById("busqueda")?.addEventListener("input", (e) => {
+    busquedaActiva = (e.target as HTMLInputElement).value;
+    filtrar();
+  });
+</script>
+
+
